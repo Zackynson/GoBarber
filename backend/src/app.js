@@ -4,6 +4,7 @@ import express from 'express';
 import Youch from 'youch';
 import * as Sentry from '@sentry/node';
 import path from 'path';
+import cors from 'cors';
 import sentryConfig from './config/sentry';
 
 // must be imported before all routes
@@ -16,7 +17,7 @@ import './database';
 class App {
   constructor() {
     this.server = express();
-    Sentry.init(sentryConfig);
+    //Sentry.init(sentryConfig);
 
     this.middlewares();
     this.routes();
@@ -25,7 +26,7 @@ class App {
 
   middlewares() {
     this.server.use(Sentry.Handlers.requestHandler());
-
+    this.server.use(cors());
     this.server.use(express.json());
     this.server.use(
       '/files',
@@ -35,7 +36,7 @@ class App {
 
   routes() {
     this.server.use(routes);
-    this.server.use(Sentry.Handlers.errorHandler());
+    //this.server.use(Sentry.Handlers.errorHandler());
   }
 
   exceptionHandler() {
